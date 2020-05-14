@@ -45,8 +45,8 @@ def flipper_post_install(installer)
   end
 end
 
-target 'GoMarketplace' do
-  # Pods for GoMarketplace
+target 'gomarketplace' do
+  # Pods for gomarketplace
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -78,7 +78,7 @@ target 'GoMarketplace' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  target 'GoMarketplaceTests' do
+  target 'gomarketplaceTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -95,10 +95,10 @@ target 'GoMarketplace' do
   end
 end
 
-target 'GoMarketplace-tvOS' do
-  # Pods for GoMarketplace-tvOS
+target 'gomarketplace-tvOS' do
+  # Pods for gomarketplace-tvOS
 
-  target 'GoMarketplace-tvOSTests' do
+  target 'gomarketplace-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

@@ -18,12 +18,14 @@ interface Product {
 
 interface CartContext {
   products: Product[];
-  addToCart(item: Product): void;
+  addToCart(item: Omit<Product, 'quantity'>): void;
   increment(id: string): void;
   decrement(id: string): void;
 }
 
 const CartContext = createContext<CartContext | null>(null);
+
+const CART_STORAGE_KEY = '@GoMarketplace:CART';
 
 const CartProvider: React.FC = ({ children }) => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -36,9 +38,40 @@ const CartProvider: React.FC = ({ children }) => {
     loadProducts();
   }, []);
 
-  const addToCart = useCallback(async product => {
-    // TODO ADD A NEW ITEM TO THE CART
-  }, []);
+  const addToCart = useCallback(
+    async product => {
+      await AsyncStorage.removeItem(CART_STORAGE_KEY);
+      const findCallback = ({ id }: Product) => id === product.id;
+      const findedProductIndex = products.findIndex(findCallback);
+      if (findedProductIndex < 0) {
+        const newProduct = { ...product, quantity: 1 };
+        const newListOfProducts = [...products, newProduct];
+
+        setProducts(newListOfProducts);
+
+        await AsyncStorage.setItem(
+          CART_STORAGE_KEY,
+          JSON.stringify(newListOfProducts),
+        );
+        return;
+      }
+
+      const internalProductsList = [...products];
+      const actualProduct = internalProductsList[findedProductIndex];
+
+      internalProductsList[findedProductIndex] = {
+        ...actualProduct,
+        quantity: actualProduct.quantity + 1,
+      };
+
+      setProducts(internalProductsList);
+      await AsyncStorage.setItem(
+        CART_STORAGE_KEY,
+        JSON.stringify(internalProductsList),
+      );
+    },
+    [products],
+  );
 
   const increment = useCallback(async id => {
     // TODO INCREMENTS A PRODUCT QUANTITY IN THE CART

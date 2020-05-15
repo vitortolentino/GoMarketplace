@@ -86,8 +86,6 @@ const CartProvider: React.FC = ({ children }) => {
 
   const addToCart = useCallback(
     async product => {
-      /* await AsyncStorage.removeItem(CART_STORAGE_KEY);
-      setProducts([]); */
       const findCallback = ({ id }: Product) => id === product.id;
       const findedProductIndex = products.findIndex(findCallback);
       if (findedProductIndex < 0) {
